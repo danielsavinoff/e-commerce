@@ -136,7 +136,7 @@ export const columns: ColumnDef<Product & { productShots: ProductShot[]}>[] = [
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href={`/admin/products/edit/${product.id}`}>
+                <Link href={`/cp/products/edit/${product.id}`}>
                   Edit
                 </Link>
               </DropdownMenuItem>

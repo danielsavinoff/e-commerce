@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/admin/products/(list)/_components/data-tabletsx"  ],
+, "src/app/cp/products/(list)/_components/data-tabletsx"  ],
   "exclude": [
     "node_modules"
   ]

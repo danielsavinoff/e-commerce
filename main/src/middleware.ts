@@ -12,17 +12,26 @@ export default async function middleware(
 
   const session = await auth()
 
-  if (pathname.startsWith('/sign-in')) return(session ? 
+  console.log(session)
+
+  if (pathname.startsWith('/auth')) return(session ? 
     NextResponse.redirect(origin) :
     NextResponse.next()
   )
 
   if (!session) return NextResponse.redirect(
-    `${req.nextUrl.origin}/sign-in`
+    `${req.nextUrl.origin}/auth`
   )
   
-  if (pathname.match(/^\/admin\/products\/?$/))
-    return NextResponse.redirect(`${origin}${'/admin/products/active'}`)
+  if (pathname.startsWith('/cp') && 
+    !session.user.roles?.some(role => (
+      role === 'seller' || 
+      role === 'admin' || 
+      role === 'manager'
+  ))) return NextResponse.error()
+
+  if (pathname.match(/^\/cp\/products\/?$/))
+    return NextResponse.redirect(`${origin}${'/cp/products/active'}`)
 }
 
 export const config: MiddlewareConfig = {

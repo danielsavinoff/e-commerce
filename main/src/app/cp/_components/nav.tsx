@@ -17,11 +17,11 @@ const Nav = ({
   className,
   underlineActiveLink,
   ...props
-}: React.ComponentProps<'nav'> & { underlineActiveLink?: boolean}) => (
+}: React.ComponentProps<'nav'> & { underlineActiveLink?: boolean }) => (
   <nav
     className={cn([
-      'flex items-center *:px-4 *:py-3 text-foreground/60 [&>*:hover]:text-foreground/80 [&>[data-active=true]]:text-primary *:transition-colors',
-      underlineActiveLink && '[&>[data-active=true]]:border-b-2 [&>[data-active=true]]:border-primary',
+      'flex items-center *:box-border *:px-4 *:py-3 text-foreground/60 [&>*:hover]:text-foreground/80 [&>[data-active=true]]:text-primary *:transition-colors',
+      underlineActiveLink && '*:border-b-2 *:border-b-transparent [&>[data-active=true]]:border-primary',
       className
     ])}
     {...props}

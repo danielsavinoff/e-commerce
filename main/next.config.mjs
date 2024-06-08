@@ -3,7 +3,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/sign-in/:path/:more*',
+        source: '/auth/:path/:more*',
         destination: 'http://localhost:8080/:path/:more*',   
       },
     ]

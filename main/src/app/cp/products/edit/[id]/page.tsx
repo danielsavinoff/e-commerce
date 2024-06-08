@@ -6,11 +6,11 @@ import {
   PageHead, 
   PageHeader, 
   PageTitle 
-} from "@/app/admin/_components/header"
+} from "@/app/cp/_components/header"
 
-import ProductForm from "@/app/admin/products/_components/forms/product-form"
+import ProductForm from "@/app/cp/products/_components/forms/product-form"
 
-import { updateProduct } from "@/app/admin/products/_actions/product-actions"
+import { updateProduct } from "@/app/cp/products/_actions/product-actions"
 
 export default async function EditProductPage({ 
   params: { id }

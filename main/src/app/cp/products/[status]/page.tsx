@@ -19,7 +19,7 @@ import { PageHead, PageHeader, PageTitle } from "../../_components/header"
 import DataTable from "../_components/data-table"
 import { columns } from "../_components/columns"
 import { notFound } from "next/navigation"
-import { Nav } from "@/app/admin/_components/nav"
+import { Nav } from "@/app/cp/_components/nav"
 
 export default async function ProductsPage({
   searchParams,
@@ -79,7 +79,7 @@ export default async function ProductsPage({
           <PageTitle>
             Products
             <Button className="ml-auto" asChild>
-              <Link href={'/admin/products/add'}>
+              <Link href={'/cp/products/add'}>
                 <Plus className="mr-2 h-4 w-4"/> New
               </Link>
             </Button>
@@ -87,13 +87,13 @@ export default async function ProductsPage({
         </PageHeader>
         <Nav underlineActiveLink>
           <Link 
-            href={'/admin/products/active'}
+            href={'/cp/products/active'}
             data-active={params.status === 'active'}
           >
             Active
           </Link>
           <Link 
-            href={'/admin/products/archived'} 
+            href={'/cp/products/archived'} 
             data-active={params.status === 'archived'}
           >
             Archived
