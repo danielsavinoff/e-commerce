@@ -21,7 +21,7 @@ const PageHeader =  ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div 
     className={cn([
-      "my-8 space-y-4",
+      "my-4 space-y-4",
       className
     ])}
     {...props}
@@ -34,7 +34,7 @@ const PageTitle = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h1 
     className={cn([
-      'flex text-3xl font-bold text-primary',
+      'flex text-3xl font-bold text-foreground',
       className
     ])}
     {...props}

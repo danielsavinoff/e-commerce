@@ -12,8 +12,6 @@ export default async function middleware(
 
   const session = await auth()
 
-  console.log(session)
-
   if (pathname.startsWith('/auth')) return(session ? 
     NextResponse.redirect(origin) :
     NextResponse.next()
@@ -30,8 +28,7 @@ export default async function middleware(
       role === 'manager'
   ))) return NextResponse.error()
 
-  if (pathname.match(/^\/cp\/products\/?$/))
-    return NextResponse.redirect(`${origin}${'/cp/products/active'}`)
+  return NextResponse.next()
 }
 
 export const config: MiddlewareConfig = {

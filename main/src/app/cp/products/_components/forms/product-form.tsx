@@ -23,23 +23,30 @@ import {
 	SelectValue 
 } from '@/components/ui/select';
 
-export default function ProductForm({
+export function ProductForm({
 	action,
 	defaultValues,
+	onPendingChange
 }: {
 	action: (
 		state: unknown,
 		payload: any,
 	) => any
 	defaultValues?: { [key: string ]: unknown }
+	onPendingChange?: (state: boolean) => unknown
 }) {
 	const [error, submitAction, isPending] = useActionState(action, null);
 	const [files, setFiles] = useState<FileList | null>(null)
 
 	useEffect(() => setFiles(null), [error])
 
+	useEffect(() => {
+		if (typeof onPendingChange === 'function')
+			onPendingChange(isPending)
+	}, [isPending])
+
 	return (
-		<form className="space-y-8" action={submitAction}>
+		<form id={'product-form'} className="space-y-8" action={submitAction}>
 			<div className="space-y-2">
 				<Label htmlFor="productName">Name</Label>
 				<Input
@@ -158,23 +165,21 @@ export default function ProductForm({
 					name='id' 
 				/>
 			)}
-			<Submit />
 		</form>
 	);
 }
 
-function Submit() {
+export function Submit() {
 	const { pending } = useFormStatus();
 
 	return (
-		<Button type="submit">
+		<Button type="submit" form='product-form'>
 			{pending ? (
 				<>
-					<Loader className="mr-2 h-4 w-4 animate-spin" />
-					Submitting...
+					<Loader className="h-4 w-4 animate-spin" />
 				</>
 			) : (
-				<>Submit</>
+				<>Save</>
 			)}
 		</Button>
 	);

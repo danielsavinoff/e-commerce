@@ -20,7 +20,7 @@ const Nav = ({
 }: React.ComponentProps<'nav'> & { underlineActiveLink?: boolean }) => (
   <nav
     className={cn([
-      'flex items-center *:box-border *:px-4 *:py-3 text-foreground/60 [&>*:hover]:text-foreground/80 [&>[data-active=true]]:text-primary *:transition-colors',
+      'flex items-center text-sm font-medium *:px-4 *:pb-3 *:pt-2 text-foreground/60 [&>*:hover]:text-foreground/80 [&>[data-active=true]]:text-foreground *:transition-colors',
       underlineActiveLink && '*:border-b-2 *:border-b-transparent [&>[data-active=true]]:border-primary',
       className
     ])}

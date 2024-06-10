@@ -14,7 +14,7 @@ export const ActiveLink = ({
   return(
     <Link
       href={href}
-      data-active={pathname === href}
+      data-active={pathname.startsWith(href)}
       {...props}
     />
   )

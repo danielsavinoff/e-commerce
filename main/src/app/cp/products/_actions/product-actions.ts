@@ -8,6 +8,7 @@ import { db } from "@/database/db"
 import { z } from "zod"
 
 import slugify from 'slugify'
+import { redirect } from 'next/navigation'
 
 const image = (z
   .instanceof(File)
@@ -94,6 +95,8 @@ async function addProduct(_: unknown, formData: FormData) {
       status: data.status
     }
   })
+
+  redirect('products')
 }
 
 const updateProductSchema = addProductSchema.merge(z.object({
@@ -141,6 +144,8 @@ async function updateProduct(_: unknown, formData: FormData) {
       } : {})
     }
   })
+
+  redirect('products')
 }
 
 async function deleteProduct({ id }: { id: string }) {

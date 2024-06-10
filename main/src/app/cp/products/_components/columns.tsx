@@ -14,6 +14,8 @@ import { deleteProduct } from '../_actions/product-actions'
 import { Product, ProductShot } from '@prisma/client'
 import { Checkbox } from '@/components/ui/checkbox'
 import { usePathname, useSearchParams, useSelectedLayoutSegment } from 'next/navigation'
+import { Badge } from '@/components/ui/badge'
+import React from 'react'
 
 const ColumnHeader = ({ 
   header, 
@@ -62,43 +64,52 @@ const ColumnHeader = ({
 }
 
 export const columns: ColumnDef<Product & { productShots: ProductShot[]}>[] = [
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    id: 'productImage',
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div 
+        className="align-middle h-8 aspect-square overflow-hidden rounded-sm" 
+        role='image'
+      >
+        <img 
+          src={row.original.productShots[0].pathname}
+          className='h-full aspect-square object-cover'
+        />
+      </div>
     ),
-    enableSorting: false,
-    enableHiding: false,
+    header: () => <span role='image' /> 
   },
   {
     accessorKey: 'name',
     header: 'Product',
     cell: ({ row }) => (
       <Link
-        href={`/${row.original.slug}`}
+        href={`${row.original.status}/${row.original.slug}`}
         className="flex items-center group"
       >
-        <div className="overflow-hidden hidden md:inline-block rounded-md">
-          <img 
-            src={row.original.productShots[0].pathname}
-            className='h-12 aspect-square object-cover group-hover:scale-105  group-hover:brightness-95 transition-all'
-          />
-        </div>
-        <span className="ml-2 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
+        <span className="font-medium text-ellipsis whitespace-nowrap overflow-hidden">
           {row.original.name}
         </span>
       </Link>
@@ -106,21 +117,43 @@ export const columns: ColumnDef<Product & { productShots: ProductShot[]}>[] = [
     enableSorting: false
   },
   {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge
+        variant={'outline'}
+      >
+        {`${row.original.status[0].toUpperCase()}${row.original.status.substring(1)}`}
+      </Badge>
+    )
+  },
+  {
+    accessorKey: 'stock',
+    header: 'Stock',
+    cell: ({ row }) => (
+      <span className='text-nowrap'>
+        {`${row.original.stock} items`}
+      </span>
+    )
+  },
+  {
     accessorKey: 'priceInTheSmallestDenomination',
-    header: ({ header }) => (
-      <ColumnHeader header={header.id}>
-        Price
-      </ColumnHeader>
-    ),
+    header: 'Price',
     accessorFn: (row) => {
       const divider = parseInt(process.env.NEXT_PUBLIC_APP_CURRENCY_CONVERSION_FACTOR!)
-
+      const currency = process.env.NEXT_PUBLIC_APP_CURRENCY_CODE
+      
       return new Intl.NumberFormat(undefined, {
-        currency: process.env.NEXT_PUBLIC_APP_CURRENCY_CODE,
+        currency,
         style: 'currency',
-        currencyDisplay: 'narrowSymbol'
-      }).format(row.priceInTheSmallestDenomination / divider)
-    }
+        currencyDisplay: 'narrowSymbol',
+      }).format(row.priceInTheSmallestDenomination / divider) + ` ${currency}`
+    },
+    cell: ({ getValue }) => (
+      <span className="text-nowrap">
+        {getValue() as React.ReactNode}
+      </span>
+    )
   },
   {
     id: 'action',

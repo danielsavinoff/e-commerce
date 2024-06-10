@@ -19,6 +19,7 @@ model Product {
   priceInTheSmallestDenomination Int
   slug                           String        @unique
   status                         String
+  stock                          Int           @default(0)
   productShots                   ProductShot[]
 }
 

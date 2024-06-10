@@ -134,15 +134,7 @@ export default function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
-      <div className="flex">
-        <p className="text-sm font-medium text-muted-foreground">
-          {table.getRowCount()} items
-        </p>
-        <p className="ml-auto text-sm font-medium text-muted-foreground">
-          1-{table.getState().pagination.pageSize} from {table.getRowCount()} items
-        </p>
-      </div> */}
+      </div>*/}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
