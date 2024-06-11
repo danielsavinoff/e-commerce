@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button"
 
 import Link from "next/link"
 
-import { ArrowUpDown, File, FileDown, Filter, Plus } from "lucide-react"
+import { ArrowUpDown, FileDown, Filter, Plus } from "lucide-react"
 
-import { PageHead, PageHeader, PageDescription, PageTitle } from "@/app/cp/_components/header"
+import { PageHead, PageHeader, PageTitle } from "@/app/cp/_components/header"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { CaretSortIcon } from "@radix-ui/react-icons"
 
 export default async function AdminProductPageLayout({
   children,
@@ -16,53 +17,54 @@ export default async function AdminProductPageLayout({
 }) {
   return(
     <>
-      <PageHead>
+      <PageHead className="mb-8">
         <PageHeader>
           <PageTitle>
             Product assortment
-            <div className="flex ml-auto">
-              <Button className="mr-4 shadow-sm" size={"sm"} variant={"outline"}>
-                <FileDown className="mr-2 h-4 w-4" /> Export
-              </Button>
-              <Button size={"sm"} asChild>
-                <Link href={'?modal=create'}>
-                  <Plus className="mr-2 h-4 w-4"/> Add product
-                </Link>
-              </Button>
-            </div>
           </PageTitle>
+          <div className="flex flex-wrap gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  size={'xs'}
+                  variant={"outline"}
+                  className="text-xs"
+                >
+                  <ArrowUpDown className="h-3 w-3 mr-2" />
+                  Sorting
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="start">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium leading-none">Sort</h4>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <Button
+              size={'xs'}
+              variant={"outline"}
+              className="text-xs"
+            >
+              <Filter className="h-3 w-3 mr-2" />
+              Filters
+            </Button>
+            <Button
+              size={'xs'}
+              variant={"outline"}
+              className="text-xs ml-auto"
+            >
+              <FileDown className="mr-2 h-3 w-4" /> Export
+            </Button>
+            <Button size={"xs"} className="text-xs" asChild>
+              <Link href={'?modal=create'}>
+                <Plus className="mr-2 h-3 w-4"/> New
+              </Link>
+            </Button>
+          </div>
         </PageHeader>
       </PageHead>
-      <div className="flex my-4">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-            size={'xs'}
-            variant={"outline"}
-            className="rounded-full text-xs mr-2 shadow-sm"
-            >
-              <ArrowUpDown className="h-3 w-3 mr-1" />
-              Sorting 
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent align="start">
-            <div className="space-y-2">
-              <h4 className="font-medium leading-none">Sort filter</h4>
-              <p className="text-sm text-muted-foreground">
-                Sort by any column
-              </p>
-            </div>
-          </PopoverContent>
-        </Popover>
-        <Button
-          size={'xs'}
-          variant={"outline"}
-          className="rounded-full text-xs shadow-sm"
-        >
-          <Filter className="h-3 w-3 mr-1" />
-          Filter by status 
-        </Button>
-      </div>
       {children}
       {modal}
     </>
