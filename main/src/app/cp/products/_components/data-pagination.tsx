@@ -7,7 +7,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { cn } from "@/lib/utils"
-import React from "react"
 
 export default function DataPagination({
   count,
@@ -15,6 +14,7 @@ export default function DataPagination({
   index,
   init = {},
   edges = 1,
+  core = true,
   className,
   ...props
 }: {
@@ -22,6 +22,7 @@ export default function DataPagination({
   size: number
   index: number
   edges?: number
+  core?: boolean
   init?: Record<string, string> | URLSearchParams
 } & React.ComponentProps<'nav'>) {
   const lastPage = Math.ceil(count / size)
@@ -31,7 +32,7 @@ export default function DataPagination({
   return(
     <Pagination
       className={cn([
-        'ml-auto',
+        'mx-0 justify-normal',
         className
       ])}
       {...props}
@@ -61,17 +62,19 @@ export default function DataPagination({
               </PaginationLink>
             </PaginationItem>
           ))}
-        <PaginationItem>
-          <PaginationLink 
-            href={`?${new URLSearchParams({
-              ...init,
-              page: `${index}`
-            })}`}
-            isActive
-          >
-            {index}
-          </PaginationLink>
-        </PaginationItem>
+        {core && (
+          <PaginationItem>
+            <PaginationLink 
+              href={`?${new URLSearchParams({
+                ...init,
+                page: `${index}`
+              })}`}
+              isActive
+            >
+              {index}
+            </PaginationLink>
+          </PaginationItem>
+        )}
         {[...Array(nextPage !== index ? 
             Math.min(lastPage - index, 
               edges * (index === 1 ? 2 : 1)) : 0
