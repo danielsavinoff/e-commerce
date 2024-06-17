@@ -17,6 +17,7 @@ import {
   DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 import _ from 'lodash'
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default async function ProductsPage({
   searchParams,
@@ -50,168 +51,183 @@ export default async function ProductsPage({
         <h1 className="flex text-3xl font-bold text-foreground">
           Product assortment
         </h1>
-        <div className="flex items-center flex-wrap gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                size={'sm'}
-                variant={"outline"}
-                className="shadow-sm sm:mr-auto"
+        <div className="grid items-center sm:grid-cols-2 gap-2">
+          <Tabs>
+            <TabsList className="h-8">
+              <TabsTrigger 
+                value="active"
+                className="h-6"
               >
-                <ListFilter className="h-4 w-4 mr-2" />
-                Filter
-              </Button>
-            </PopoverTrigger>
-          </Popover>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size={'sm'}
-                variant={"outline"}
-                className="shadow-sm"
+                Active
+              </TabsTrigger>
+              <TabsTrigger 
+                value="archived"
+                className="h-6"
               >
-                <SlidersHorizontal className="mr-2 h-4 w-4" /> Display
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-56">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>Display</DropdownMenuLabel>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <ArrowUpDown className="h-4 w-4 mr-2" />
-                    Sort by
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="min-w-44">
-                    <DropdownMenuRadioGroup value={searchParams?.sort}>
-                      <DropdownMenuLabel>
-                        Columns
-                      </DropdownMenuLabel>
-                      <Link href={`?${new URLSearchParams({
-                        ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
-                        ...(searchParams?.sort === 'name' ? {} : { sort: 'name' })
-                      })}`}>
-                        <DropdownMenuRadioItem value="name">
-                          Product
-                        </DropdownMenuRadioItem>
-                      </Link>
-                      <Link href={`?${new URLSearchParams({
-                        ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
-                        ...(searchParams?.sort === 'stock' ? {} : { sort: 'stock' })
-                      })}`}>
-                        <DropdownMenuRadioItem value="stock">
-                          Stock
-                        </DropdownMenuRadioItem>
-                      </Link>
-                      <Link href={`?${new URLSearchParams({
-                        ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
-                        ...(searchParams?.sort === 'priceInTheSmallestDenomination' ? {} : { sort: 'priceInTheSmallestDenomination' })
-                      })}`}>
-                        <DropdownMenuRadioItem value="priceInTheSmallestDenomination">
-                          Price
-                        </DropdownMenuRadioItem>
-                      </Link>
-                    </DropdownMenuRadioGroup>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <Eye className="mr-2 h-4 w-4" />
-                    Visibility
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="min-w-44">
-                    <DropdownMenuGroup>
-                      <DropdownMenuLabel>
-                        Columns
-                      </DropdownMenuLabel>
-                      <Link
-                        href={`?${new URLSearchParams({
-                          ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
-                          ...(
-                            searchParams?.hidden ? (
-                              searchParams.hidden.includes('status') ? (
-                                searchParams.hidden === 'status' ? {} : ({
-                                  hidden: _.without(searchParams.hidden.split(','), 'status').join()
+                Archived
+              </TabsTrigger>
+              <TabsTrigger 
+                value="all"
+                className="h-6"
+              >
+                All
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <div className="flex sm:justify-end items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size={"xs"}
+                  variant={"outline"}
+                  className="shadow-sm"
+                >
+                  <SlidersHorizontal className="mr-2 h-4 w-4" /> Display
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-56">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Display</DropdownMenuLabel>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <ArrowUpDown className="h-4 w-4 mr-2" />
+                      Sort by
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="min-w-44">
+                      <DropdownMenuRadioGroup value={searchParams?.sort}>
+                        <DropdownMenuLabel>
+                          Columns
+                        </DropdownMenuLabel>
+                        <Link href={`?${new URLSearchParams({
+                          ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
+                          ...(searchParams?.sort === 'name' ? {} : { sort: 'name' })
+                        })}`}>
+                          <DropdownMenuRadioItem value="name">
+                            Product
+                          </DropdownMenuRadioItem>
+                        </Link>
+                        <Link href={`?${new URLSearchParams({
+                          ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
+                          ...(searchParams?.sort === 'stock' ? {} : { sort: 'stock' })
+                        })}`}>
+                          <DropdownMenuRadioItem value="stock">
+                            Stock
+                          </DropdownMenuRadioItem>
+                        </Link>
+                        <Link href={`?${new URLSearchParams({
+                          ...(searchParams ? _.omit(searchParams, ['sort']) : {}),
+                          ...(searchParams?.sort === 'priceInTheSmallestDenomination' ? {} : { sort: 'priceInTheSmallestDenomination' })
+                        })}`}>
+                          <DropdownMenuRadioItem value="priceInTheSmallestDenomination">
+                            Price
+                          </DropdownMenuRadioItem>
+                        </Link>
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <Eye className="mr-2 h-4 w-4" />
+                      Visibility
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="min-w-44">
+                      <DropdownMenuGroup>
+                        <DropdownMenuLabel>
+                          Columns
+                        </DropdownMenuLabel>
+                        <Link
+                          href={`?${new URLSearchParams({
+                            ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
+                            ...(
+                              searchParams?.hidden ? (
+                                searchParams.hidden.includes('status') ? (
+                                  searchParams.hidden === 'status' ? {} : ({
+                                    hidden: _.without(searchParams.hidden.split(','), 'status').join()
+                                  })
+                                ) : ({ 
+                                  hidden: searchParams.hidden.split(',').concat('status').join() 
                                 })
-                              ) : ({ 
-                                hidden: searchParams.hidden.split(',').concat('status').join() 
-                              })
-                            ) : { hidden: 'status' }
-                          )
-                        })}`}
-                      >
-                        <DropdownMenuCheckboxItem
-                          checked={!(searchParams?.hidden && 
-                            searchParams.hidden.includes('status'))
-                          }
+                              ) : { hidden: 'status' }
+                            )
+                          })}`}
                         >
-                          Status
-                        </DropdownMenuCheckboxItem>
-                      </Link>
-                      <Link
-                        href={`?${new URLSearchParams({
-                          ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
-                          ...(
-                            searchParams?.hidden ? (
-                              searchParams.hidden.includes('stock') ? (
-                                searchParams.hidden === 'stock' ? {} : ({
-                                  hidden: _.without(searchParams.hidden.split(','), 'stock').join()
+                          <DropdownMenuCheckboxItem
+                            checked={!(searchParams?.hidden && 
+                              searchParams.hidden.includes('status'))
+                            }
+                          >
+                            Status
+                          </DropdownMenuCheckboxItem>
+                        </Link>
+                        <Link
+                          href={`?${new URLSearchParams({
+                            ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
+                            ...(
+                              searchParams?.hidden ? (
+                                searchParams.hidden.includes('stock') ? (
+                                  searchParams.hidden === 'stock' ? {} : ({
+                                    hidden: _.without(searchParams.hidden.split(','), 'stock').join()
+                                  })
+                                ) : ({ 
+                                  hidden: searchParams.hidden.split(',').concat('stock').join() 
                                 })
-                              ) : ({ 
-                                hidden: searchParams.hidden.split(',').concat('stock').join() 
-                              })
-                            ) : { hidden: 'stock' }
-                          )
-                        })}`}
-                      >
-                        <DropdownMenuCheckboxItem
-                          checked={!(searchParams?.hidden && 
-                            searchParams.hidden.includes('stock'))
-                          }
+                              ) : { hidden: 'stock' }
+                            )
+                          })}`}
                         >
-                          Stock
-                        </DropdownMenuCheckboxItem>
-                      </Link>
-                      <Link
-                        href={`?${new URLSearchParams({
-                          ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
-                          ...(
-                            searchParams?.hidden ? (
-                              searchParams.hidden.includes('priceInTheSmallestDenomination') ? (
-                                searchParams.hidden === 'priceInTheSmallestDenomination' ? {} : ({
-                                  hidden: _.without(searchParams.hidden.split(','), 'priceInTheSmallestDenomination').join()
+                          <DropdownMenuCheckboxItem
+                            checked={!(searchParams?.hidden && 
+                              searchParams.hidden.includes('stock'))
+                            }
+                          >
+                            Stock
+                          </DropdownMenuCheckboxItem>
+                        </Link>
+                        <Link
+                          href={`?${new URLSearchParams({
+                            ...(searchParams ? _.omit(searchParams, ['hidden']) : {}),
+                            ...(
+                              searchParams?.hidden ? (
+                                searchParams.hidden.includes('priceInTheSmallestDenomination') ? (
+                                  searchParams.hidden === 'priceInTheSmallestDenomination' ? {} : ({
+                                    hidden: _.without(searchParams.hidden.split(','), 'priceInTheSmallestDenomination').join()
+                                  })
+                                ) : ({ 
+                                  hidden: searchParams.hidden.split(',').concat('priceInTheSmallestDenomination').join() 
                                 })
-                              ) : ({ 
-                                hidden: searchParams.hidden.split(',').concat('priceInTheSmallestDenomination').join() 
-                              })
-                            ) : { hidden: 'priceInTheSmallestDenomination' }
-                          )
-                        })}`}
-                      >
-                        <DropdownMenuCheckboxItem
-                          checked={!(searchParams?.hidden && 
-                            searchParams.hidden.includes('priceInTheSmallestDenomination'))
-                          }
+                              ) : { hidden: 'priceInTheSmallestDenomination' }
+                            )
+                          })}`}
                         >
-                          Price
-                        </DropdownMenuCheckboxItem>
-                      </Link>
-                    </DropdownMenuGroup>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <Link href={'?'}>
-                <DropdownMenuItem>
-                  Reset to default
-                </DropdownMenuItem>
+                          <DropdownMenuCheckboxItem
+                            checked={!(searchParams?.hidden && 
+                              searchParams.hidden.includes('priceInTheSmallestDenomination'))
+                            }
+                          >
+                            Price
+                          </DropdownMenuCheckboxItem>
+                        </Link>
+                      </DropdownMenuGroup>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <Link href={'?'}>
+                  <DropdownMenuItem>
+                    Reset to default
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button 
+              size={"xs"} 
+              asChild
+            >
+              <Link href={'?modal=create'}>
+                <Plus className="mr-2 h-4 w-4"/> Add product
               </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button size={"sm"} asChild>
-            <Link href={'?modal=create'}>
-              <Plus className="mr-2 h-4 w-4"/> Add product
-            </Link>
-          </Button>
+            </Button>
+          </div>
         </div>
       </div>
       <DataTable   
@@ -224,8 +240,10 @@ export default async function ProductsPage({
         )}
       />
       <div className="w-full flex items-center mt-4 px-2">
-        <p className="text-sm whitespace-nowrap">
-          {(!count ? 0 : 1) + (size * (index - 1))}-{Math.min(size * index, count)} from {count} results.
+        <p 
+          className="text-sm whitespace-nowrap"
+        >
+          {(+(!!count)) + (size * (index - 1))} &mdash; {Math.min(size * index, count)} of {count} rows.
         </p>
         <DataPagination 
           count={count}
