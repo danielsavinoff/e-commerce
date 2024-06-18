@@ -39,12 +39,14 @@ export default function DataPagination({
     >
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious 
+          <PaginationPrevious
+            size={"xs"}
             href={`?${new URLSearchParams({
               ...init,
               page: `${prevPage}`
             })}`}
             aria-disabled={index <= 1}
+            className="shadow-sm w-8"
           />
         </PaginationItem>
         {[...Array(prevPage !== index ? 
@@ -53,10 +55,12 @@ export default function DataPagination({
           )].map((_, i, arr) => (
             <PaginationItem key={index - arr.length + i}>
               <PaginationLink
+                size={"xs"}
                 href={`?${new URLSearchParams({
                   ...init,
                   page: `${index - arr.length + i}`
                 })}`}
+                className="shadow-sm w-8"
               >
                 {index - arr.length + i}
               </PaginationLink>
@@ -64,11 +68,13 @@ export default function DataPagination({
           ))}
         {core && (
           <PaginationItem>
-            <PaginationLink 
+            <PaginationLink
+              size={"xs"} 
               href={`?${new URLSearchParams({
                 ...init,
                 page: `${index}`
               })}`}
+              className="shadow-sm w-8"
               isActive
             >
               {index}
@@ -81,22 +87,26 @@ export default function DataPagination({
           )].map((_, i) => (
             <PaginationItem key={index + i + 1}>
               <PaginationLink
+                size={"xs"}
                 href={`?${new URLSearchParams({
                   ...init,
                   page: `${index + i + 1}`
                 })}`}
+                className="shadow-sm w-8"
               >
                 {index + i + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
         <PaginationItem>
-          <PaginationNext 
+          <PaginationNext
+            size={"xs"} 
             href={`?${new URLSearchParams({
               ...init,
               page: `${nextPage}`, 
             })}`}
             aria-disabled={index >= lastPage}
+            className="shadow-sm w-8"
           />
         </PaginationItem>
       </PaginationContent>

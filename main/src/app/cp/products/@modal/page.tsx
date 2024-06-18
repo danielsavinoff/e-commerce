@@ -51,7 +51,7 @@ export default function ProductSheet() {
 
             nextSearchParams.delete('modal')
 
-            router.push(`${pathname}${nextSearchParams}`)
+            router.push(`${pathname}?${nextSearchParams}`)
           }
         }}
       >

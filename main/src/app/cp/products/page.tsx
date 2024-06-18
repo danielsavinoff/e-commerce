@@ -4,8 +4,6 @@ import { columns } from "@/app/cp/products/_components/columns"
 import DataTable from "@/app/cp/products/_components/data-table"
 import DataPagination from "@/app/cp/products/_components/data-pagination"
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-
 import { Button } from "@/components/ui/button"
 
 import Link from "next/link"
@@ -18,12 +16,16 @@ import {
 
 import _ from 'lodash'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { redirect } from "next/navigation"
 
 export default async function ProductsPage({
   searchParams,
 }: {
   searchParams?: { [key: string]: string  }
 }) {
+  if (!['active', 'archived', 'all'].includes(`${searchParams?.tab}`))
+    redirect('?tab=active')
+
   const index = parseInt(`${searchParams?.page}`) || 1
   const size = 10
 
@@ -32,7 +34,11 @@ export default async function ProductsPage({
       skip: (size) * (index - 1), 
       take: size,
       include: { productShots: true },
-      // where: { status: params.status },
+      where: { 
+        ...(searchParams!.tab === 'all' ? {} : {
+          status: searchParams!.tab
+        })
+      },
       orderBy: [{
         name: searchParams?.sort === 'name' ? 'desc' : undefined,
         stock: searchParams?.sort === 'stock' ? 'desc' : undefined,
@@ -42,7 +48,13 @@ export default async function ProductsPage({
             undefined
       }]
     }),
-    db.product.count()
+    db.product.count({
+      where: {
+        ...(searchParams!.tab === 'all' ? {} : {
+          status: searchParams!.tab
+        })
+      }
+    })
   ])
 
   return(
@@ -52,25 +64,43 @@ export default async function ProductsPage({
           Product assortment
         </h1>
         <div className="grid items-center sm:grid-cols-2 gap-2">
-          <Tabs>
+          <Tabs value={searchParams?.tab}>
             <TabsList className="h-8">
               <TabsTrigger 
                 value="active"
                 className="h-6"
+                asChild
               >
-                Active
+                <Link href={`?${new URLSearchParams({
+                  ...searchParams,
+                  tab: 'active'
+                })}`}>
+                  Active
+                </Link>
               </TabsTrigger>
               <TabsTrigger 
                 value="archived"
                 className="h-6"
+                asChild
               >
-                Archived
+               <Link href={`?${new URLSearchParams({
+                  ...searchParams,
+                  tab: 'archived'
+                })}`}>
+                  Archived
+                </Link> 
               </TabsTrigger>
               <TabsTrigger 
                 value="all"
                 className="h-6"
+                asChild
               >
-                All
+                <Link href={`?${new URLSearchParams({
+                  ...searchParams,
+                  tab: 'all'
+                })}`}>
+                  All
+                </Link>
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -223,7 +253,10 @@ export default async function ProductsPage({
               size={"xs"} 
               asChild
             >
-              <Link href={'?modal=create'}>
+              <Link href={`?${new URLSearchParams({
+                ...searchParams,
+                modal: 'create',
+              })}`}>
                 <Plus className="mr-2 h-4 w-4"/> Add product
               </Link>
             </Button>
@@ -245,15 +278,20 @@ export default async function ProductsPage({
         >
           {(+(!!count)) + (size * (index - 1))} &mdash; {Math.min(size * index, count)} of {count} rows.
         </p>
-        <DataPagination 
-          count={count}
-          index={index}
-          size={size}
-          init={searchParams}
-          edges={0}
-          core={false}
-          className="justify-end"
-        />
+        <div className="flex items-center gap-6 ml-auto">
+          <p className="text-sm font-medium whitespace-nowrap">
+            Page {searchParams?.page ?? +(!!count)} of {Math.ceil(count / size)}
+          </p>
+          <DataPagination 
+            count={count}
+            index={index}
+            size={size}
+            init={searchParams}
+            edges={0}
+            core={false}
+            className="justify-end"
+          />
+        </div>
       </div>
     </>
   )
